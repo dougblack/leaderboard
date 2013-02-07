@@ -33,5 +33,5 @@ function searchClubs(queryString) {
 }
 
 function searchResultRow(club) {
-  return '<tr><td><a href="leaderboard.html?club_id=' + club.id + '">' + club.name + '</a></td></tr>';
+  return '<tr><td><a href="leaderboard.html?club_id=' + club.id + '&name=' + club.name +'">' + club.name + '</a></td></tr>';
 }

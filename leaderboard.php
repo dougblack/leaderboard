@@ -1,7 +1,64 @@
 <?php
 
-$members = $_POST["members"];
+$club_id = urlencode($_POST["club_id"]);
 
-echo var_dump(json_decode($members));
+// Get first and last day of the current month.
+$startDate = date("Y-m-01");
+$endDate = date("Y-m-t");
+
+$offset = 0;
+$rides_left = true;
+$rides = array();
+
+// The API only returns 50 rides per request, so we continue grabbing sets of 50
+// until we've run out requests.
+while ($rides_left) {
+  $club_rides_url = "http://www.strava.com/api/v1/rides?clubId=$club_id&startDate=$startDate&endDate=$endDate&offset=$offset";
+  $offset += 50;
+  $response = json_decode(file_get_contents($club_rides_url), true);
+  $new_rides = $response["rides"];
+  $number_of_rides = count($new_rides);
+  if ($number_of_rides == 0 || $number_of_rides < 50)
+    $rides_left = false;
+  $rides = array_merge($rides, $new_rides);
+}
+
+$memberData = array();
+
+// Get the data for each ride from this month.
+foreach ($rides as $ride) {
+
+  $ride_id = $ride["id"];
+  $ride_url = "http://www.strava.com/api/v1/rides/$ride_id";
+  $response = json_decode(file_get_contents($ride_url), true);
+
+  $member_id = $response["ride"]["athlete"]["id"];
+
+  if (array_key_exists($member_id, $memberData)) {
+    $member = &$memberData[$member_id];
+  } else {
+    $member = array();
+    $member["total_elevation"] = 0;
+    $member["average_elevation"] = 0;
+    $member["number_of_rides"] = 0;
+    $member["athlete"] = $response["ride"]["athlete"]["name"];
+    $memberData[$member_id] = $member;
+  }
+
+  // Update elevation and ride statistics.
+  $ride_elevation = $response["ride"]["elevationGain"];
+  $member["total_elevation"] += $ride_elevation;
+  $member["number_of_rides"] += 1;
+  $member["average_elevation"] = $member["total_elevation"] / $member["number_of_rides"];
+}
+
+// Custom comparator.
+function cmp($x, $y) {
+  return $y["total_elevation"] - $x["total_elevation"];
+}
+
+usort($memberData, "cmp");
+
+echo json_encode($memberData);
 
 ?>

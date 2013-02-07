@@ -1,0 +1,58 @@
+
+
+body {
+  background: #f7f7f7;
+  color: #444;
+  text-shadow: 0 0.13em #fff;
+  font-family: "Ubuntu";
+}
+
+#container {
+  height: 30em;
+  width: 40em;
+  margin-top: 6em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1 {
+  font-size: 3em;
+  color: #d31306;
+}
+
+#search_results_table a {
+  font-size: 2em;
+  color: #d31306;
+  text-decoration: none;
+}
+
+#search_results_table a:hover {
+  background: #d3b3b3;
+  text-shadow:none;
+}
+
+input {
+  width: 100%;
+  padding: 1em;
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+#search_button {
+  background: #d31306;
+  color: #fff;
+  padding: 1em;
+  border: 1px solid #fff;
+}
+
+#leaderboard {
+  background: #fff;
+  font-size: 1.5em;
+  width: 100%;
+  text-transform: capitalize;
+}
+
+#leaderboard tr:nth-child(odd) {
+  background: #eee;
+  text-shadow: none;
+}
