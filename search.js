@@ -1,29 +1,36 @@
 
 $(function() {
+  // Binding for search button.
   $("input#search_button").click(function() {
-    console.log("clicked");
-    var queryString = $("input#club_name").val();
-    console.log(queryString);
+
+    var query_string = $("input#club_name").val();
+
+    // Clear old results.
     $("table#search_results_table").html("");
-    searchClubs(queryString);
+    search_clubs(query_string);
+
     return false;
+
   });
 });
 
-function searchClubs(queryString) {
+// Search Strava API for clubs with matching names.
+function search_clubs(query_string) {
   
   $.ajax({
     type: "POST",
     url: "search.php",
-    data: {'queryString': queryString},
+    data: {'query_string': query_string},
     success: function(response) {
-      console.log(response);
-      var responseObject = JSON.parse(response);
-      var clubs = responseObject['clubs'];
+
+      var response_object = JSON.parse(response);
+      var clubs = response_object['clubs'];
+
       for (var i = 0; i < clubs.length; i++) {
         var club = clubs[i];
-        $('table#search_results_table').append(searchResultRow(club));
+        $('table#search_results_table').append(search_result_row(club));
       }
+
     },
     error: function(response) {
              console.log("ERROR" + response);
@@ -32,6 +39,8 @@ function searchClubs(queryString) {
 
 }
 
-function searchResultRow(club) {
-  return '<tr><td><a href="leaderboard.html?club_id=' + club.id + '&name=' + club.name +'">' + club.name + '</a></td></tr>';
+// Returns a table row for the given club.
+function search_result_row(club) {
+  return '<tr><td><a href="leaderboard.html?club_id=' + club.id + '&name=' + club.name +'">' 
+    + club.name + '</a></td></tr>';
 }

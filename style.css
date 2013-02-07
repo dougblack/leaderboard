@@ -56,3 +56,17 @@ input {
   background: #eee;
   text-shadow: none;
 }
+
+#loading h1 {
+  margin-top: 3em;
+  color: #ddd;
+  font-size: 2em;
+}
+
+#loading {
+  text-align: center;
+}
+
+#club_name {
+  font-size: 2em;
+}
