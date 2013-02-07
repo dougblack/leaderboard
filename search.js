@@ -25,6 +25,11 @@ function search_clubs(query_string) {
 
       var response_object = JSON.parse(response);
       var clubs = response_object['clubs'];
+      
+      if (clubs.length == 0) {
+        $('table#search_results_table').append('<tr><td style="color: black"><a>No search results.</a></td></tr>');
+        return;
+      }
 
       for (var i = 0; i < clubs.length; i++) {
         var club = clubs[i];
