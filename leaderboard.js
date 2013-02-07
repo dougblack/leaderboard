@@ -1,9 +1,15 @@
+var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 
 $(function() {
+
+  var today = new Date();
+  var month = months[today.getMonth()];
   var params = get_url_params();
   var club_id = params["club_id"];
   var club_name = decodeURIComponent(params["name"]);
 
+  $("#month").html(month);
   $("#club_name").html(club_name + " Leaderboard");
   rank(club_id);
 
